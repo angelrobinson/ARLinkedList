@@ -31,7 +31,7 @@ namespace ARLinkedList
         /// <summary>
         /// nest class of a node to use with the LList
         /// </summary>
-        public class LListNode
+        public class LListNode : Comparer<T>
         {
             //variables are private by default. 
             //they can only be accessed through properties
@@ -84,7 +84,23 @@ namespace ARLinkedList
 
             }
 
-
+            /// <summary>
+            /// Compares
+            /// </summary>
+            /// <param name="x"></param>
+            /// <param name="y"></param>
+            /// <returns></returns>
+            public override int Compare(T x, T y)
+            {
+                if (x is IComparable<T>)
+                {
+                    return ((IComparable<T>)x).CompareTo(y);
+                }
+                else
+                {
+                    return StringComparer.CurrentCulture.Compare(x, y);
+                }
+            }
         }
 
         //private variables of the LList<T> class
@@ -247,25 +263,64 @@ namespace ARLinkedList
                     
                 }
             }
-
-            
-
             //decrease the list node count
             count--;
         }
-        public void Min()
+
+
+        /// <summary>
+        /// Find the LListNode containing the minimum value stored in the LList
+        /// </summary>
+        /// <returns>LListNode.Item</returns>
+        public T Min()
+        {           
+            
+            //set starting point at beginning of list
+            current = first;
+
+            //create temp minimum
+            var min = first.Next;
+
+           
+            for (int i = 0; i < count -1; i++)
+            {
+                //if min is > current then min = current
+                if (min.Compare(min.Item, current.Item) != 0)
+                {
+                    min = current;
+                }
+                //go to next node
+                current = current.Next;
+            }
+
+            return min.Item;
+        }
+
+        /// <summary>
+        /// Find the LListNode containing the maximum value stored in the LList
+        /// </summary>
+        /// <returns>LListNoce.Item</returns>
+        public T Max()
         {
             //set starting point at beginning of list
             current = first;
 
             //create temp minimum
-            var min = current;
+            var max = first.Next;
 
-            for (int i = 0; i < count -1; i++)
+            for (int i = 0; i < count - 1; i++)
             {
+                //if max is < current then max = current
+                if (max.Compare(max.Item, current.Item) != 0)
+                {
+                    max = current;
+                }
 
+                //go to next node
+                current = current.Next;
             }
+
+            return max.Item;
         }
-        public void Max() { }
     }
 }
