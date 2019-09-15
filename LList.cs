@@ -42,7 +42,7 @@ namespace ARLinkedList
     /// *  Maximum() –returns the maximum key in the list
     /// </remarks>
 
-    public class LList<T> : IEnumerable<T>
+    public class LList<T>
     {
         /// <summary>
         /// nest class of a node to use with the LList
@@ -133,7 +133,7 @@ namespace ARLinkedList
 
             public override string ToString()
             {
-                return Item.ToString();
+                return base.ToString();
             }
         }
 
@@ -162,37 +162,6 @@ namespace ARLinkedList
         }
 
         /// <summary>
-        /// Allows list to be able to iterate forward when accessing in a loop
-        /// </summary>
-        /// <returns></returns>
-        //public IEnumerator<T> CountForward()
-        //{
-        //    current = first;
-
-        //    while (current != null)
-        //    {
-        //        yield return current.Item;
-        //        current = current.Next;
-        //    }
-
-        //}
-
-        /// <summary>
-        /// Allows list ot be able to iterate backward when accessing in a loop
-        /// </summary>
-        /// <returns></returns>
-        //public IEnumerator<T> CountBack()
-        //{
-        //    current = last;
-
-        //    while (current != null)
-        //    {
-        //        yield return current.Item;
-        //        current = current.Prev;
-        //    }
-        //}
-
-        /// <summary>
         /// Compares Node items in list to findItem and returns the item if it is in the list or default if it doesn't
         /// </summary>
         /// <param name="findItem"></param>
@@ -212,30 +181,7 @@ namespace ARLinkedList
             return null;
         }
 
-        public T FindAt(int index)
-        {
-            try
-            {
-                index = Math.Abs(index);
-
-
-                for (int i = 0; i < Count; i++)
-                {
-                    if (index == i)
-                    {
-                        return current.Item;
-                    }
-                }
-
-                return default;
-            }
-            catch (NullReferenceException)
-            {
-                return default;
-            }
-            
-        }
-
+       
         /// <summary>
         /// Add new node at the beginning of the list
         /// </summary>
@@ -290,7 +236,7 @@ namespace ARLinkedList
             if (last != null)
             {
                 //since this node is being added to the end of the list, the prev node needs to be the orignal last node
-                toAdd.Prev = first;
+                toAdd.Prev = last;
 
                 //add reference to the new node as the next of the original last node
                 last.Next = toAdd;
@@ -298,12 +244,12 @@ namespace ARLinkedList
             else
             {
                 //if this is the first node to be added to the list then the previous and next node is null
-                //and we need to make the new node the last node of the list
-                last = toAdd;
+                //and we need to make the new node both the first and last node
+                first = toAdd;
             }
 
             //make the new node the first node of the list
-            first = toAdd;
+            last = toAdd;
 
             //increase the count of the List
             count++;
@@ -347,8 +293,9 @@ namespace ARLinkedList
             //create temp minimum
             var min = first.Next;
 
+            
            
-            for (int i = 0; i < Count -1; i++)
+            for (int i = 0; i < Count; i++)
             {
                 //if min is > current then min = current
                 if (min.Compare(min.Item, current.Item) != 0)
@@ -389,6 +336,11 @@ namespace ARLinkedList
             return max.Item;
         }
 
+
+        /// <summary>
+        /// This allows for the List to loop through the list with a foreach loop
+        /// </summary>
+        /// <returns></returns>
         public IEnumerator<T> GetEnumerator()
         {
             current = first;
@@ -400,9 +352,5 @@ namespace ARLinkedList
             }
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return (IEnumerator) GetEnumerator();
-        }
     }
 }
