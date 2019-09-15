@@ -23,9 +23,24 @@ namespace ARLinkedList
 {
 
     /// <summary>
-    /// LList is a generic class that allows you to make a list that has links to both previous and next nodes on the list
+    /// LList is a generic class that allows you to make a list that has links to both previous and next nodes on the list. This is called a Doubly Linked List.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    /// <remarks>
+    /// Name: Angela Robinson
+    /// Class: CSC382 Data Structures and Alghorithms
+    /// Date: 9/13/2019
+    /// Assignment: Linked List
+    /// Assignment Description:
+    /// Implement a templated(generics) doubly-linked list.Your linked list class should implement the following functionality:
+    /// *Find(dataToFind) – returns a pointer to the node whose key matches dataToFind.
+    /// *Insert(newData) – inserts a new node at the end of the list with a key equal to newData
+    /// * Delete(delNode)- deletes the node that delNode points to from the list.
+    /// *  For extra credit, implement a function that finds the Minimum and Maximum values in your linked list.
+    /// * Minimum() – returns the minimum key in the list
+    /// *  Maximum() –returns the maximum key in the list
+    /// </remarks>
+    
     public class LList<T>
     {
         /// <summary>
