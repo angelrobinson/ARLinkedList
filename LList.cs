@@ -14,6 +14,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,8 +41,8 @@ namespace ARLinkedList
     /// * Minimum() – returns the minimum key in the list
     /// *  Maximum() –returns the maximum key in the list
     /// </remarks>
-    
-    public class LList<T>
+
+    public class LList<T> : IEnumerable<T>
     {
         /// <summary>
         /// nest class of a node to use with the LList
@@ -84,14 +85,27 @@ namespace ARLinkedList
             }
 
             /// <summary>
-            /// Default constructor for the Node nested class.
+            /// Default Constructor for empty node
+            /// </summary>
+            public LListNode()
+            {
+                //when empty node is made we need to set Item data to it's default value
+                Item = default;
+
+                //next we put a default value to the next and previous nodes
+                next = null;
+                previous = null;
+            }
+
+            /// <summary>
+            /// constructor for the Node nested class.
             /// </summary>
             /// <param name="dataType">The data type that is passed into the LList T parameter</param>
             public LListNode(T dataType)
             {
                 //when a node is initially made, 
                 //we need to save the date into the node
-                item = dataType;
+                Item = dataType;
 
                 //next we put a default value to the next and previous nodes. 
                 next = null;
@@ -116,6 +130,11 @@ namespace ARLinkedList
                     return StringComparer.CurrentCulture.Compare(x, y);
                 }
             }
+
+            public override string ToString()
+            {
+                return Item.ToString();
+            }
         }
 
         //private variables of the LList<T> class
@@ -123,6 +142,13 @@ namespace ARLinkedList
         LListNode last;
         LListNode current;
         int count;
+
+        //properties
+        public int Count
+        {
+            get { return count; }
+            set { count = value; }
+        }
 
         /// <summary>
         /// default constructor
@@ -132,38 +158,39 @@ namespace ARLinkedList
             first = default;
             last = default;
             current = default;
+            Count = default;
         }
 
         /// <summary>
         /// Allows list to be able to iterate forward when accessing in a loop
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<T> CountForward()
-        {
-            current = first;
+        //public IEnumerator<T> CountForward()
+        //{
+        //    current = first;
 
-            while (current != null)
-            {
-                yield return current.Item;
-                current = current.Next;
-            }
-            
-        }
+        //    while (current != null)
+        //    {
+        //        yield return current.Item;
+        //        current = current.Next;
+        //    }
+
+        //}
 
         /// <summary>
         /// Allows list ot be able to iterate backward when accessing in a loop
         /// </summary>
         /// <returns></returns>
-        public IEnumerator<T> CountBack()
-        {
-            current = last;
+        //public IEnumerator<T> CountBack()
+        //{
+        //    current = last;
 
-            while (current != null)
-            {
-                yield return current.Item;
-                current = current.Prev;
-            }
-        }
+        //    while (current != null)
+        //    {
+        //        yield return current.Item;
+        //        current = current.Prev;
+        //    }
+        //}
 
         /// <summary>
         /// Compares Node items in list to findItem and returns the item if it is in the list or default if it doesn't
@@ -171,7 +198,7 @@ namespace ARLinkedList
         /// <param name="findItem"></param>
         public LListNode Find(T findItem)
         {
-            for (int i = 0; i < count - 1; i++)
+            for (int i = 0; i < Count - 1; i++)
             {
                 current = first;
                 if (current.Item.Equals(findItem))
@@ -183,6 +210,30 @@ namespace ARLinkedList
             }
 
             return null;
+        }
+
+        public T FindAt(int index)
+        {
+            try
+            {
+                index = Math.Abs(index);
+
+
+                for (int i = 0; i < Count; i++)
+                {
+                    if (index == i)
+                    {
+                        return current.Item;
+                    }
+                }
+
+                return default;
+            }
+            catch (NullReferenceException)
+            {
+                return default;
+            }
+            
         }
 
         /// <summary>
@@ -220,7 +271,7 @@ namespace ARLinkedList
             first = toAdd;
 
             //increase the count of the List
-            count++;
+            Count++;
         }
 
         /// <summary>
@@ -259,7 +310,7 @@ namespace ARLinkedList
         }
         public void Delete(T delItem)
         {
-            for (int i = 0; i < count -1; i++)
+            for (int i = 0; i < Count -1; i++)
             {
                 current = first;
                 if (current.Item.Equals(delItem))
@@ -279,7 +330,7 @@ namespace ARLinkedList
                 }
             }
             //decrease the list node count
-            count--;
+            Count--;
         }
 
 
@@ -297,7 +348,7 @@ namespace ARLinkedList
             var min = first.Next;
 
            
-            for (int i = 0; i < count -1; i++)
+            for (int i = 0; i < Count -1; i++)
             {
                 //if min is > current then min = current
                 if (min.Compare(min.Item, current.Item) != 0)
@@ -323,7 +374,7 @@ namespace ARLinkedList
             //create temp minimum
             var max = first.Next;
 
-            for (int i = 0; i < count - 1; i++)
+            for (int i = 0; i < Count - 1; i++)
             {
                 //if max is < current then max = current
                 if (max.Compare(max.Item, current.Item) != 0)
@@ -336,6 +387,22 @@ namespace ARLinkedList
             }
 
             return max.Item;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            current = first;
+
+            while (current != null)
+            {
+                yield return current.Item;
+                current = current.Next;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator) GetEnumerator();
         }
     }
 }
