@@ -194,6 +194,8 @@ namespace ARLinkedList
         /// <param name="firstItem">data that is to be added to the beginning of the list</param>
         public void AddFirst(T firstItem)
         {
+            //TODO: need to find out how to get invalid type exception on generics
+
             //create new node with the firstItem data
             LListNode toAdd = new LListNode(firstItem);
 
@@ -286,11 +288,11 @@ namespace ARLinkedList
                     toDelete.Next = default;
                     toDelete.Prev = default;
 
-                    
+                    //decrease the list node count
+                    Count--;
                 }
             }
-            //decrease the list node count
-            Count--;
+            
         }
 
 
