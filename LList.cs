@@ -114,7 +114,7 @@ namespace ARLinkedList
             }
 
             /// <summary>
-            /// Compares
+            /// Compares one node to another
             /// </summary>
             /// <param name="x"></param>
             /// <param name="y"></param>
@@ -131,6 +131,10 @@ namespace ARLinkedList
                 }
             }
 
+            /// <summary>
+            /// allows for the node element to be written in string format
+            /// </summary>
+            /// <returns></returns>
             public override string ToString()
             {
                 return base.ToString();
@@ -143,7 +147,9 @@ namespace ARLinkedList
         LListNode current;
         int count;
 
-        //properties
+        /// <summary>
+        /// Property to get and set the Count property of the List
+        /// </summary>
         public int Count
         {
             get { return count; }
@@ -226,9 +232,12 @@ namespace ARLinkedList
         /// <param name="lastItem">data that is to be added to the end of the list<</param>
         public void AddBack(T lastItem)
         {
+            //TODO: need to find out how to get invalid type exception on generics
+
             //create new node with the lastItem data
             LListNode toAdd = new LListNode(lastItem);
 
+            
             //since this node is being added to the end of the list, the next node does not need to be assigned
             //because when we created the node, the next and previous nodes automatically is set to null.
 
@@ -254,6 +263,11 @@ namespace ARLinkedList
             //increase the count of the List
             count++;
         }
+
+        /// <summary>
+        /// Deletes element from list
+        /// </summary>
+        /// <param name="delItem">data that is to be deleted from the list</param>
         public void Delete(T delItem)
         {
             for (int i = 0; i < Count -1; i++)
